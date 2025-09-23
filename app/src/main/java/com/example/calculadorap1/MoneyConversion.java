@@ -7,10 +7,10 @@ public class MoneyConversion {
     private Double result; // puede ser null
 
     public MoneyConversion(String amount, String fromCurrency, String toCurrency) {
-       setAmount(amount);
-         setFromCurrency(fromCurrency);
-            setToCurrency(toCurrency);
-            setResult(null);
+        setAmount(amount);
+        setFromCurrency(fromCurrency);
+        setToCurrency(toCurrency);
+        setResult(null);
     }
 
     // Getters y setters

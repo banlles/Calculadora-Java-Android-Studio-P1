@@ -9,7 +9,7 @@ public class NumberCount {
 
         if (number.contains(".")) {
             String decimals = number.substring(number.indexOf(".") + 1);
-            return decimals.length() > 2;
+            return decimals.length() >= 2;
         }
 
         return false; // no tiene punto, entonces no tiene decimales
