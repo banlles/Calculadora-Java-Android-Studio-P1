@@ -69,8 +69,8 @@ public class Convert {
     }
 
     // Convertir entre monedas
-    public static MoneyConversion convert(Context context, MoneyConversion moneyConversion) {
-        double euros = moneyConversion.getAmount(); // tasa de la moneda EURO
+    public static MoneyConversion convertMoney(Context context, MoneyConversion moneyConversion) {
+        double euros = Double.parseDouble(moneyConversion.getAmount()); // tasa de la moneda EURO
         double toRate = getRate(context, moneyConversion.getToCurrency()); // tasa de la moneda que sea
 
         if (euros == -1 || toRate == -1) {

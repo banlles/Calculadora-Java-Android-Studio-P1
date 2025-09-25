@@ -1,9 +1,9 @@
 package com.example.calculadorap1;
 
 public class MoneyConversion {
-    private double amount;
-    private String fromCurrency;
-    private String toCurrency;
+    private String amount = "";
+    private String fromCurrency = "EUR"; // valor por defecto
+    private String toCurrency =  "";
     private Double result; // puede ser null
 
 
@@ -11,15 +11,16 @@ public class MoneyConversion {
     }
 
     public MoneyConversion(String amount, String fromCurrency, String toCurrency) {
-        setAmount(amount);
+        setAmount(amount, false);
         setFromCurrency(fromCurrency);
         setToCurrency(toCurrency);
         setResult(null);
     }
 
-    // Getters y setters
-    public double getAmount() {
-        return amount;
+    // Getters y setter
+
+    public String getAmount() {
+        return String.valueOf(amount);
     }
 
     public String getFromCurrency() {
@@ -38,12 +39,13 @@ public class MoneyConversion {
         return String.valueOf(result);
     }
 
-    public void setAmount(String amount) {
+    public void setAmount(String amount, boolean concat) {
         try {
-            double value = Double.parseDouble(amount);
-
-            this.amount = value;
-
+            if (concat) {
+                this.amount += amount;
+            } else {
+                this.amount = amount;
+            }
         } catch (NumberFormatException e) {
             throw new IllegalArgumentException("El valor introducido no es un número válido");
         }
