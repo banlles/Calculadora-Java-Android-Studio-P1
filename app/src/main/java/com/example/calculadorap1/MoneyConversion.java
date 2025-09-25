@@ -6,6 +6,10 @@ public class MoneyConversion {
     private String toCurrency;
     private Double result; // puede ser null
 
+
+    public MoneyConversion() {
+    }
+
     public MoneyConversion(String amount, String fromCurrency, String toCurrency) {
         setAmount(amount);
         setFromCurrency(fromCurrency);
@@ -28,6 +32,10 @@ public class MoneyConversion {
 
     public Double getResult() {
         return result;
+    }
+
+    public String getResultString() {
+        return String.valueOf(result);
     }
 
     public void setAmount(String amount) {

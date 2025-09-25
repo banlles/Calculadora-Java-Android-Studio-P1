@@ -11,6 +11,8 @@ import android.widget.Toast;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.calculadorap1.exceptions.convertException;
+
 public class MainActivity extends AppCompatActivity {
 
     String amount = "";
@@ -21,7 +23,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Convert.clearRates(this);
-        Convert.setRate(this, "EURO", 1.0);
 
         Button buttonNumber0 = findViewById(R.id.buttonNumber0);
         Button buttonNumber1 = findViewById(R.id.buttonNumber1);
@@ -48,144 +49,29 @@ public class MainActivity extends AppCompatActivity {
         TextView textViewResult = findViewById(R.id.textViewResult);
 
 
+        //BOTONES DE LOS NUMEROS
 
-        //BOTONES DE LOS NUMEROS Y EL PUNTO
+        buttonNumber0.setOnClickListener(v -> appendDigit("0"));
+        buttonNumber1.setOnClickListener(v -> appendDigit("1"));
+        buttonNumber2.setOnClickListener(v -> appendDigit("2"));
+        buttonNumber3.setOnClickListener(v -> appendDigit("3"));
+        buttonNumber4.setOnClickListener(v -> appendDigit("4"));
+        buttonNumber5.setOnClickListener(v -> appendDigit("5"));
+        buttonNumber6.setOnClickListener(v -> appendDigit("6"));
+        buttonNumber7.setOnClickListener(v -> appendDigit("7"));
+        buttonNumber8.setOnClickListener(v -> appendDigit("8"));
+        buttonNumber9.setOnClickListener(v -> appendDigit("9"));
 
-        buttonNumber0.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (NumberCount.hasMoreThanTwoDecimals(amount)) {
-                    Toast.makeText(MainActivity.this, "No puedes poner mas de dos decimales", Toast.LENGTH_SHORT).show();
 
-                    return; // salir si ya hay más de dos decimales
-                }
-                amount += "0";
-                updateResult(amount);
-
-            }
-        });
-
-        buttonNumber1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (NumberCount.hasMoreThanTwoDecimals(amount)) {
-                    Toast.makeText(MainActivity.this, "No puedes poner mas de dos decimales", Toast.LENGTH_SHORT).show();
-
-                    return; // salir si ya hay más de dos decimales
-                }
-                amount += "1";
-                updateResult(amount);
-            }
-        });
-
-        buttonNumber2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (NumberCount.hasMoreThanTwoDecimals(amount)) {
-                    Toast.makeText(MainActivity.this, "No puedes poner mas de dos decimales", Toast.LENGTH_SHORT).show();
-
-                    return; // salir si ya hay más de dos decimales
-                }
-                amount += "2";
-                updateResult(amount);
-            }
-        });
-
-        buttonNumber3.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (NumberCount.hasMoreThanTwoDecimals(amount)) {
-                    Toast.makeText(MainActivity.this, "No puedes poner mas de dos decimales", Toast.LENGTH_SHORT).show();
-
-                    return; // salir si ya hay más de dos decimales
-                }
-                amount += "3";
-                updateResult(amount);
-            }
-        });
-
-        buttonNumber4.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (NumberCount.hasMoreThanTwoDecimals(amount)) {
-                    Toast.makeText(MainActivity.this, "No puedes poner mas de dos decimales", Toast.LENGTH_SHORT).show();
-
-                    return; // salir si ya hay más de dos decimales
-                }
-                amount += "4";
-                updateResult(amount);
-            }
-        });
-
-        buttonNumber5.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (NumberCount.hasMoreThanTwoDecimals(amount)) {
-                    Toast.makeText(MainActivity.this, "No puedes poner mas de dos decimales", Toast.LENGTH_SHORT).show();
-
-                    return; // salir si ya hay más de dos decimales
-                }
-                amount += "5";
-                updateResult(amount);
-            }
-        });
-
-        buttonNumber6.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (NumberCount.hasMoreThanTwoDecimals(amount)) {
-                    Toast.makeText(MainActivity.this, "No puedes poner mas de dos decimales", Toast.LENGTH_SHORT).show();
-
-                    return; // salir si ya hay más de dos decimales
-                }
-                amount += "6";
-                updateResult(amount);
-            }
-        });
-
-        buttonNumber7.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (NumberCount.hasMoreThanTwoDecimals(amount)) {
-                    Toast.makeText(MainActivity.this, "No puedes poner mas de dos decimales", Toast.LENGTH_SHORT).show();
-
-                    return; // salir si ya hay más de dos decimales
-                }
-                amount += "7";
-                updateResult(amount);
-            }
-        });
-
-        buttonNumber8.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (NumberCount.hasMoreThanTwoDecimals(amount)) {
-                    Toast.makeText(MainActivity.this, "No puedes poner mas de dos decimales", Toast.LENGTH_SHORT).show();
-
-                    return; // salir si ya hay más de dos decimales
-                }
-                amount += "8";
-                updateResult(amount);
-            }
-        });
-
-        buttonNumber9.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (NumberCount.hasMoreThanTwoDecimals(amount)) {
-                    Toast.makeText(MainActivity.this, "No puedes poner mas de dos decimales", Toast.LENGTH_SHORT).show();
-
-                    return; // salir si ya hay más de dos decimales
-                }
-                amount += "9";
-                updateResult(amount);
-            }
-        });
+        // BOTON DEL PUNTO DECIMAL
 
         buttonPoint.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!amount.contains(".")) {
+                if (!amount.contains(".")) { //no hay un punto
+                    if (amount.isEmpty()) {  // no hay ningun numero aun
+                        amount = "0";
+                    }
                     amount += ".";
                     updateResult(amount);
                 } else {
@@ -195,36 +81,14 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
+
         //BOTONES DE LAS MONEDAS
 
-        buttonDollar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                askUserForToCurrency("DOLLAR");
-            }
-        });
+        buttonLliures.setOnClickListener(e -> askUserForToCurrency("LLIURES"));
+        buttonDollar.setOnClickListener(e -> askUserForToCurrency("DOLLAR"));
+        buttonYen.setOnClickListener(e -> askUserForToCurrency("YEN"));
+        buttonYuan.setOnClickListener(e -> askUserForToCurrency("YUAN"));
 
-        buttonYen.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                askUserForToCurrency("YEN");
-            }
-
-        });
-
-        buttonYuan.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                askUserForToCurrency("YUAN");
-            }
-        });
-
-        buttonLliures.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                askUserForToCurrency("LLIURES");
-            }
-        });
 
 
         //BOTONES DE BORRAR Y CONVERTIR
@@ -243,7 +107,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (!amount.isEmpty()) {
-                    amount = amount.substring(0, amount.length() - 1);
+                    amount = amount.substring(0, amount.length() - 1); // eliminar el último carácter empezando por 0
                     updateResult(amount);
                 }
             }
@@ -252,20 +116,31 @@ public class MainActivity extends AppCompatActivity {
         buttonResult.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (amount.isEmpty() || toCurrency.isEmpty()) {
+                textViewResult.setText(" ");
+                if (amount.isEmpty() || toCurrency.isEmpty()) {  // falta cantidad o moneda
                     Toast.makeText(MainActivity.this, "Debes introducir una cantidad y seleccionar una moneda", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
                 MoneyConversion moneyConversion;
                 try {
-                    moneyConversion = new MoneyConversion(amount, "EURO", toCurrency);
-                    textViewResult.setText(Convert.convert(MainActivity.this, moneyConversion));
+                    moneyConversion = new MoneyConversion(amount, "EURO", toCurrency); //creamos el objeto
+                    moneyConversion = Convert.convert(MainActivity.this, moneyConversion); // lo convertimos
+                    textViewResult.setText(moneyConversion.getResultString());  // mostramos el resultado, llamando a convert
                 } catch (IllegalArgumentException e) {
                     Toast.makeText(MainActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
                 }
             }
         });
+    }
+
+    private void appendDigit(String d) {
+        if (NumberCount.hasMoreThanTwoDecimals(amount)) {
+            Toast.makeText(this, "No puedes poner mas de dos decimales", Toast.LENGTH_SHORT).show();
+            return;
+        }
+            amount += d;
+        updateResult(amount);
     }
 
     public void updateResult(String result) {
@@ -275,7 +150,16 @@ public class MainActivity extends AppCompatActivity {
 
     private void askUserForToCurrency(String currency) {
 
-        double rate = Convert.getRate(this, currency);
+        double rate;
+        try {
+            rate = Convert.getRate(this, currency);
+        } catch (convertException e) {
+            Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+            return;
+        } catch (Exception e) {
+            Toast.makeText(this, "Error inesperado al obtener la tasa de conversión", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
         if (rate == -1) { // si no existe
             EditText input = new EditText(this);
@@ -293,6 +177,10 @@ public class MainActivity extends AppCompatActivity {
                             Toast.makeText(this, "Guardado: 1 " + currency + " = " + newRate + " €", Toast.LENGTH_SHORT).show();
                         } catch (NumberFormatException e) {
                             Toast.makeText(this, "Número inválido", Toast.LENGTH_SHORT).show();
+                        } catch (convertException e) {
+                            Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                        } catch (Exception e) {
+                            Toast.makeText(this, "Error inesperado al guardar la tasa de conversión", Toast.LENGTH_SHORT).show();
                         }
                     })
                     .show();
