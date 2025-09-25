@@ -77,7 +77,7 @@ public class Convert {
             throw new convertException("Tasa de conversión no disponible para una de las monedas");
         }
 
-        moneyConversion.setResult( euros / toRate);
+        moneyConversion.setResult(String.valueOf(euros / toRate));
         return moneyConversion;
     }
 }

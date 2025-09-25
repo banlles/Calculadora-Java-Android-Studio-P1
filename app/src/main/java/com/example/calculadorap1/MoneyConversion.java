@@ -4,7 +4,7 @@ public class MoneyConversion {
     private String amount = "";
     private String fromCurrency = "EUR"; // valor por defecto
     private String toCurrency =  "";
-    private Double result; // puede ser null
+    private String result; // puede ser null
 
 
     public MoneyConversion() {
@@ -31,7 +31,7 @@ public class MoneyConversion {
         return toCurrency;
     }
 
-    public Double getResult() {
+    public String getResult() {
         return result;
     }
 
@@ -59,7 +59,7 @@ public class MoneyConversion {
         this.toCurrency = toCurrency;
     }
 
-    public void setResult(Double result) {
+    public void setResult(String result) {
         this.result = result;
     }
 }
