@@ -30,5 +30,8 @@ local.properties
 *.keystore
 *.jks
 
-
+# Carpetas de compilación
+/out/
+/build/
+/target/
 
