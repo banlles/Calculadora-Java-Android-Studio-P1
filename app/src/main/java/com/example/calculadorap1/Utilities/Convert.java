@@ -1,7 +1,8 @@
-package com.example.calculadorap1;
+package com.example.calculadorap1.Utilities;
 
 import android.content.Context;
 
+import com.example.calculadorap1.MoneyConversion;
 import com.example.calculadorap1.exceptions.convertException;
 
 import org.json.JSONException;
@@ -25,8 +26,11 @@ public class Convert {
             return new JSONObject(new String(buffer)); //si no es JSON lanza excepción
         } catch (IOException | JSONException e) {
             return new JSONObject();
-        }
+        } catch (Exception e) {
+        throw new convertException("No se pudieron cargar las tasas");
     }
+
+}
 
 
     // Guardar JSON en archivo
@@ -36,8 +40,11 @@ public class Convert {
             fos.write(rates.toString().getBytes()); // escibre el JSON en el archivo con las nuevas tasas
             fos.close();
         } catch (IOException e) {
-            throw new convertException("Error al guardar las tasas de conversión");
+            throw new convertException("No se pudieron guardar las tasas");
+        } catch (Exception e) {
+            throw new convertException("Ha ocurrido un problema guardando las tasas");
         }
+
     }
 
     // Guardar
@@ -47,38 +54,52 @@ public class Convert {
             rates.put(currency, rate); // añade o actualiza la tasa de la moneda (el put por dentro, el mismo gestiona si existe o no)
             saveRates(context, rates); // guarda las tasas actualizadas
         } catch (JSONException e) {
-            throw new convertException("Error al setear la tasa de conversión");
+            throw new convertException("No se pudo guardar la tasa");
+        } catch (Exception e) {
+            throw new convertException("Ha ocurrido un problema guardando la tasa");
         }
     }
 
     // Leer
     public static double getRate(Context context, String currency) {
-        JSONObject rates = loadRates(context); // carga las tasas existentes
-        if (rates.has(currency)) { // comprueba si existe la tasa para la moneda
-            try {
+        try {
+            JSONObject rates = loadRates(context); // carga las tasas existentes
+            if (rates.has(currency)) { // comprueba si existe la tasa para la moneda
                 return rates.getDouble(currency); // devuelve la tasa de conversión
-            } catch (JSONException e) {
-                throw new convertException("Error al obtener la tasa de conversión");
             }
+            return -1;
+        } catch (JSONException e) {
+            throw new convertException("No se pudo obtener la tasa");
+        } catch (Exception e) {
+            throw new convertException("Ha ocurrido un problema obteniendo la tasa");
         }
-        return -1;
     }
 
+    // Borrar todas las tasas
     public static void clearRates(Context context) {
-        context.deleteFile(FILE_NAME);
+        try {
+            context.deleteFile(FILE_NAME);
+        } catch (Exception e) {
+            throw new convertException("No se pudieron borrar las tasas");
+        }
     }
 
     // Convertir entre monedas
     public static MoneyConversion convertMoney(Context context, MoneyConversion moneyConversion) {
-        double euros = Double.parseDouble(moneyConversion.getAmount()); // tasa de la moneda EURO
-        double toRate = getRate(context, moneyConversion.getToCurrency()); // tasa de la moneda que sea
+        try {
+            double euros = Double.parseDouble(moneyConversion.getAmount()); // tasa de la moneda EURO
+            double toRate = getRate(context, moneyConversion.getToCurrency()); // tasa de la moneda que sea
 
-        if (euros == -1 || toRate == -1) {
-            throw new convertException("Tasa de conversión no disponible para una de las monedas");
+            if (euros == -1 || toRate == -1) {
+                throw new convertException("Tasa no disponible");
+            }
+
+            moneyConversion.setResult(String.valueOf(euros / toRate));
+            return moneyConversion;
+        } catch (NumberFormatException e) {
+            throw new convertException("La cantidad no es válida");
+        } catch (Exception e) {
+            throw new convertException("No se pudo hacer la conversión");
         }
-
-        moneyConversion.setResult(String.valueOf(euros / toRate));
-        return moneyConversion;
     }
 }
-
