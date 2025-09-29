@@ -2,6 +2,7 @@ package com.example.calculadorap1.Utilities;
 
 import android.content.Context;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -114,6 +115,22 @@ public class Utilities {
             throw new utilitiesException("No se pudo comprobar los decimales");
         }
     }
+
+    public static void updateSelectedButton(Button[] buttons, Button selected) {
+        try {
+            for (Button b : buttons) {
+                b.setSelected(false); // desmarca todos
+            }
+            if (selected != null) {
+                selected.setSelected(true); // marca solo si no es null (HECHO PARA EL BOTON CE)
+            }
+        } catch (Exception e) {
+            if (selected != null) {
+                Toast.makeText(selected.getContext(), "Ha ocurrido un problema", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
 
 
 }

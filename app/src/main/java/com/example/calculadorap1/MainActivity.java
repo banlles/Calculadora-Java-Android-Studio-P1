@@ -108,11 +108,25 @@ public class MainActivity extends AppCompatActivity {
 
 
         //BOTONES DE LAS MONEDAS
+        Button[] currencyButtons = { buttonLliures, buttonDollar, buttonYen, buttonYuan };
 
-        buttonLliures.setOnClickListener(e -> askUserForToCurrency("LLIURES"));
-        buttonDollar.setOnClickListener(e -> askUserForToCurrency("DOLLAR"));
-        buttonYen.setOnClickListener(e -> askUserForToCurrency("YEN"));
-        buttonYuan.setOnClickListener(e -> askUserForToCurrency("YUAN"));
+
+        buttonLliures.setOnClickListener(v -> {
+            Utilities.updateSelectedButton(currencyButtons, buttonLliures);
+            askUserForToCurrency("LLIURES");});
+
+        buttonDollar.setOnClickListener(v -> {
+            Utilities.updateSelectedButton(currencyButtons, buttonDollar);
+            askUserForToCurrency("DOLLAR");});
+
+        buttonYen.setOnClickListener(v -> {
+            Utilities.updateSelectedButton(currencyButtons, buttonYen);
+            askUserForToCurrency("YEN");});
+
+        buttonYuan.setOnClickListener(v -> {
+            Utilities.updateSelectedButton(currencyButtons, buttonYuan);
+            askUserForToCurrency("YUAN");});
+
 
 
         //BOTON DE BORRAR
@@ -125,6 +139,7 @@ public class MainActivity extends AppCompatActivity {
                     moneyConversion2.setAmount(" ", false);
                     Utilities.updateResult("0", 1);
                     Utilities.updateResult("0", 2);
+                    Utilities.updateSelectedButton(currencyButtons, null);
                 } catch (utilitiesException e) {
                     Utilities.toastText(MainActivity.this, e.getMessage(), "s");
                 } catch (Exception e) {
