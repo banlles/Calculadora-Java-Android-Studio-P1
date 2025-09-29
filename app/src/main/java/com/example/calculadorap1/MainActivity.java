@@ -1,7 +1,7 @@
 package com.example.calculadorap1;
 
+import android.content.Context;
 import android.os.Bundle;
-import android.text.InputType;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -16,6 +16,8 @@ import com.example.calculadorap1.exceptions.convertException;
 public class MainActivity extends AppCompatActivity {
 
     MoneyConversion moneyConversion2 = new MoneyConversion();
+    TextView textViewResult2;
+    TextView textViewResult;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,7 +26,11 @@ public class MainActivity extends AppCompatActivity {
         Convert.clearRates(this);
 
 
+        //----------------------------------ESCUCHA DE LOS BOTONES-------------------------------
+
+
         // ESCUCHANDO BOTONES DE LOS NUMEROS Y PUNTO
+
         Button buttonNumber0 = findViewById(R.id.buttonNumber0);
         Button buttonNumber1 = findViewById(R.id.buttonNumber1);
         Button buttonNumber2 = findViewById(R.id.buttonNumber2);
@@ -39,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         // ESCUCHANDO BOTONES DE LAS MONEDAS
+
         Button buttonDollar = findViewById(R.id.buttonDollar);
         Button buttonYen = findViewById(R.id.buttonYen);
         Button buttonYuan = findViewById(R.id.buttonYuan);
@@ -46,28 +53,33 @@ public class MainActivity extends AppCompatActivity {
 
 
         // ESCUCHANDO BOTONES DE BORRAR Y CONVERTIR
+
         Button buttonClear = findViewById(R.id.buttonClear);
         Button buttonBack = findViewById(R.id.buttonBack);
         Button buttonResult = findViewById(R.id.buttonResult);
 
 
         // ESCUCHANDO LOS TEXTVIEW
-        TextView textViewResult2 = findViewById(R.id.textViewResult2);
-        TextView textViewResult = findViewById(R.id.textViewResult);
+
+        textViewResult2 = findViewById(R.id.textViewResult2);
+        textViewResult = findViewById(R.id.textViewResult);
+
+
+        //----------------------------------FUNCIONAMIENTO DE LOS BOTONES-------------------------------
 
 
         //BOTONES DE LOS NUMEROS
 
-        buttonNumber0.setOnClickListener(v -> appendDigit("0"));
-        buttonNumber1.setOnClickListener(v -> appendDigit("1"));
-        buttonNumber2.setOnClickListener(v -> appendDigit("2"));
-        buttonNumber3.setOnClickListener(v -> appendDigit("3"));
-        buttonNumber4.setOnClickListener(v -> appendDigit("4"));
-        buttonNumber5.setOnClickListener(v -> appendDigit("5"));
-        buttonNumber6.setOnClickListener(v -> appendDigit("6"));
-        buttonNumber7.setOnClickListener(v -> appendDigit("7"));
-        buttonNumber8.setOnClickListener(v -> appendDigit("8"));
-        buttonNumber9.setOnClickListener(v -> appendDigit("9"));
+        buttonNumber0.setOnClickListener(v -> appendAmount("0"));
+        buttonNumber1.setOnClickListener(v -> appendAmount("1"));
+        buttonNumber2.setOnClickListener(v -> appendAmount("2"));
+        buttonNumber3.setOnClickListener(v -> appendAmount("3"));
+        buttonNumber4.setOnClickListener(v -> appendAmount("4"));
+        buttonNumber5.setOnClickListener(v -> appendAmount("5"));
+        buttonNumber6.setOnClickListener(v -> appendAmount("6"));
+        buttonNumber7.setOnClickListener(v -> appendAmount("7"));
+        buttonNumber8.setOnClickListener(v -> appendAmount("8"));
+        buttonNumber9.setOnClickListener(v -> appendAmount("9"));
 
 
         // BOTON DEL PUNTO DECIMAL
@@ -75,16 +87,16 @@ public class MainActivity extends AppCompatActivity {
         buttonPoint.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String currentAmount = moneyConversion2.getAmount(); // obtenemos el valor actual desde el objeto
+                String currentAmount = moneyConversion2.getAmount(); // obtenemos el valor actual de amount
 
                 if (!currentAmount.contains(".")) { // no hay un punto
-                    if (currentAmount.isEmpty()) {
-                        moneyConversion2.setAmount("0", false);
+                    if (currentAmount.isEmpty()) { // esta vacio
+                        moneyConversion2.setAmount("0", false); // añadimos un 0 sin concatenar al objeto moneyConversion
                     }
-                    moneyConversion2.setAmount(".", true);
-                    updateResult(moneyConversion2.getAmount());
+                    moneyConversion2.setAmount(".", true); // añadimos el . concatenando al objeto moneyConversion
+                    updateResult(moneyConversion2.getAmount(), 2);
                 } else {
-                    Toast.makeText(MainActivity.this, "Ya has introducido un punto decimal", Toast.LENGTH_SHORT).show();
+                    toastText(MainActivity.this, "Ya has introducido un punto decimal", "s");
                 }
             }
         });
@@ -98,105 +110,155 @@ public class MainActivity extends AppCompatActivity {
         buttonYuan.setOnClickListener(e -> askUserForToCurrency("YUAN"));
 
 
-        //BOTONES DE BORRAR Y CONVERTIR
+        //BOTON DE BORRAR
 
         buttonClear.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(View v) { //seteamos todo en 0 o nada
                 moneyConversion2.setAmount(" ", false);
                 moneyConversion2.setAmount(" ", false);
                 textViewResult.setText("0");
-                updateResult("0");
+                updateResult("0", 2);
             }
         });
+
+
+        //BOTON DE TIRAR UN NUMERO PARA ATRAS
 
         buttonBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String currentAmount = moneyConversion2.getAmount();
+                String currentAmount = moneyConversion2.getAmount(); // obtenemos el valor actual de amount
 
-                if (!currentAmount.isEmpty()) {
+                if (!currentAmount.isEmpty()) { // amount no esta vacio
                     String newAmount = currentAmount.substring(0, currentAmount.length() - 1); // elimina el ultimo caracter empezando por 0 y luego a la longitud le resta 1
 
-                    moneyConversion2.setAmount(newAmount, false);
-                    updateResult(moneyConversion2.getAmount());
+                    moneyConversion2.setAmount(newAmount, false); // añadimos la nueva cantidad, sin concatenar al objeto moneyConversion
+                    updateResult(moneyConversion2.getAmount(), 2);
                 }
             }
         });
 
+
+        //BOTON DE RESULT
+
         buttonResult.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                textViewResult.setText(" ");
-                String amount = moneyConversion2.getAmount();
-                String toCurrency = moneyConversion2.getToCurrency();
+                updateResult(" ", 1);
+                String amount = moneyConversion2.getAmount(); // obtenemos el valor actual de amount
+                String toCurrency = moneyConversion2.getToCurrency(); // obtenemos el valor de la moneda a la que se quiere convertir
                 if (amount.isEmpty() || toCurrency.isEmpty()) {  // falta cantidad o moneda
-                    Toast.makeText(MainActivity.this, "Debes introducir una cantidad y seleccionar una moneda", Toast.LENGTH_SHORT).show();
+                    toastText(MainActivity.this, "Debes introducir una cantidad y seleccionar una moneda", "s");
+
                     return;
                 }
 
                 try {
                     moneyConversion2 = Convert.convertMoney(MainActivity.this, moneyConversion2); // lo convertimos
-                    textViewResult.setText(moneyConversion2.getResultString());  // mostramos el resultado, llamando a convert
+                    updateResult(moneyConversion2.getResultString(), 1); // mostramos el resultado, llamando a convert
                 } catch (IllegalArgumentException e) {
-                    Toast.makeText(MainActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                    toastText(MainActivity.this, e.getMessage(), "s");
                 }
             }
         });
     }
 
-    private void appendDigit(String d) {
-        if (NumberCount.hasMoreThanTwoDecimals(moneyConversion2.getAmount())) {
-            Toast.makeText(this, "No puedes poner mas de dos decimales", Toast.LENGTH_SHORT).show();
+
+    //-------------------------------FUNCIONES DE AYUDA / PARA EVITAR REPETIR CODIGO-------------------------------
+
+    private void toastText(Context context, String text, String typeToast) {
+        switch (typeToast) {
+            case "s":
+                Toast.makeText(context, text, Toast.LENGTH_SHORT).show();
+                break;
+
+            case "l":
+                Toast.makeText(context, text, Toast.LENGTH_LONG).show();
+        }
+    }
+
+    // AÑADIR DIGITOS AL AMOUNT
+    private void appendAmount(String d) {
+        if (checkDecimals(moneyConversion2.getAmount())) { // Comprobamos que no tenga mas de X decimales
+            toastText(this, "No puedes poner mas de dos decimales", "s");
             return;
         }
-        moneyConversion2.setAmount(d, true);
-        updateResult(moneyConversion2.getAmount());
+        moneyConversion2.setAmount(d, true); // añadimos la nueva cantidad concatenando al objeto moneyConversion
+        updateResult(moneyConversion2.getAmount(), 2);
     }
 
-    public void updateResult(String result) {
-        TextView textViewResult2 = findViewById(R.id.textViewResult2);
-        textViewResult2.setText(result);
+
+    //COMPROBADOR DE DECIMALES
+    public static boolean checkDecimals(String number) {
+        int decimales = 2;
+
+        if (number == null || number.isEmpty()) { // no hay nada en number
+            return false;
+        }
+
+        if (number.contains(".")) { //miramos si tiene punto
+            String decimals = number.substring(number.indexOf(".") + 1); //guardamos en decimals los caracteres que hay apartir del punto
+            return decimals.length() >= decimales; //True o false si tiene mas de X decimales
+        }
+
+        return false; // no tiene punto, entonces no tiene decimales
     }
 
+
+    //PARA IMPRIMIR EN LOS TEXTVIEWRESULT LOS RESULTADOS (DOS TEXT VIEW, EL DE € Y EL DE LA CONVERSION)
+    public void updateResult(String result, int TextView) {
+        switch (TextView) {
+            case 1: //CONVERSION
+                textViewResult.setText(result);
+                break;
+
+            case 2: //EURO
+                textViewResult2.setText(result);
+                break;
+        }
+    }
+
+
+    //COMPROBADOR Y SETEADOR DE CURRENY
     private void askUserForToCurrency(String currency) {
 
         double rate;
         try {
-            rate = Convert.getRate(this, currency);
+            rate = Convert.getRate(MainActivity.this, currency); // Pedimos la curreny al getRate, la función propia devuelve -1 si es null
         } catch (convertException e) {
-            Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+            toastText(MainActivity.this, e.getMessage(), "s");
             return;
         } catch (Exception e) {
-            Toast.makeText(this, "Error inesperado al obtener la tasa de conversión", Toast.LENGTH_SHORT).show();
+            toastText(MainActivity.this, "Error inesperado al obtener la tasa de conversión", "s");
             return;
         }
 
-        if (rate == -1) { // si no existe
-            EditText input = new EditText(this);
-            input.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
+        if (rate == -1) { // Condicion de no existe la rate
 
-            new AlertDialog.Builder(this)
+            EditText input = new EditText(MainActivity.this);
+
+            new AlertDialog.Builder(MainActivity.this)
                     .setTitle("Nuevo factor de conversión")
                     .setMessage("Introduce el valor en euros de 1 " + currency)
                     .setView(input)
                     .setPositiveButton("Guardar", (dialog, which) -> {
                         try {
-                            double newRate = Double.parseDouble(input.getText().toString());
-                            Convert.setRate(this, currency, newRate);
-                            moneyConversion2.setToCurrency(currency);
-                            Toast.makeText(this, "Guardado: 1 " + currency + " = " + newRate + " €", Toast.LENGTH_SHORT).show();
+                            double newRate = Double.parseDouble(input.getText().toString()); // inotroducimos el input a un double al objeto moneyConversion
+                            Convert.setRate(MainActivity.this, currency, newRate); // seteamos la rate al objeto moneyConversion
+                            moneyConversion2.setToCurrency(currency); // la añadimos al objeto moneyConversion
+                            toastText(MainActivity.this, ("Guardado: 1 " + currency + " = " + newRate + " €"), "s");
                         } catch (NumberFormatException e) {
-                            Toast.makeText(this, "Número inválido", Toast.LENGTH_SHORT).show();
+                            toastText(MainActivity.this, "Número inválido", "s");
                         } catch (convertException e) {
-                            Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                            toastText(MainActivity.this, e.getMessage(), "s");
                         } catch (Exception e) {
-                            Toast.makeText(this, "Error inesperado al guardar la tasa de conversión", Toast.LENGTH_SHORT).show();
+                            toastText(MainActivity.this, "Error inesperado al guardar la tasa de conversión", "s");
                         }
                     })
                     .show();
-        } else {
-            moneyConversion2.setToCurrency(currency);
+        } else { // Existe la rate
+            moneyConversion2.setToCurrency(currency); // la añadimos al objeto moneyConversion
         }
     }
 
