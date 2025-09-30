@@ -138,24 +138,5 @@ public class Utilities {
             }
         }
     }
-
-    // EJECUTAR ONCLICK BUTTON DE FORMA SEGURA
-    public static void safeClickButton(Runnable action, Context context) {
-        try {
-            action.run();
-        } catch (utilitiesException e) {
-            toastText(context, e.getMessage(), "s");
-        } catch (convertException e) {
-            toastText(context, e.getMessage(), "s");
-        } catch (IllegalArgumentException e) {
-            toastText(context, e.getMessage(), "s");
-        } catch (Exception e) {
-            toastText(context, "Ha ocurrido un problema", "s");
-        }
-    }
-
-
-
-
 }
 

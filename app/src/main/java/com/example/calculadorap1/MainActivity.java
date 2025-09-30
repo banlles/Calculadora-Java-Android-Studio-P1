@@ -278,5 +278,4 @@ public class MainActivity extends AppCompatActivity {
             moneyConversion2.setToCurrency(currency); // la añadimos al objeto moneyConversion
         }
     }
-
 }

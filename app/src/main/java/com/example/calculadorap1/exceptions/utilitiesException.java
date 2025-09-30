@@ -5,9 +5,4 @@ public class utilitiesException extends RuntimeException {
     public utilitiesException(String message) {
         super(message);
     }
-
-    public utilitiesException(String message, Throwable cause) {
-        super(message, cause);
-    }
-
 }
