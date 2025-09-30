@@ -16,24 +16,23 @@ public class Convert {
 
     private static final String FILE_NAME = "conversion_rates.json";
 
-    // Leer JSON del archivo
+    // LEER JSON DEL ARCHIVO
     private static JSONObject loadRates(Context context) {
         try {
-            FileInputStream conversion_rates = context.openFileInput(FILE_NAME);  //Si no existe lanza excepción
+            FileInputStream conversion_rates = context.openFileInput(FILE_NAME);  // si no existe lanza excepción
             byte[] buffer = new byte[conversion_rates.available()]; // available() devuelve el tamaño del archivo en bytes y crea un array de ese tamaño de bytes
             conversion_rates.read(buffer); // lee el archivo y lo guarda en el array de bytes
             conversion_rates.close();
-            return new JSONObject(new String(buffer)); //si no es JSON lanza excepción
+            return new JSONObject(new String(buffer)); // si no es JSON lanza excepción
         } catch (IOException | JSONException e) {
             return new JSONObject();
         } catch (Exception e) {
-        throw new convertException("No se pudieron cargar las tasas");
+            throw new convertException("No se pudieron cargar las tasas");
+        }
+
     }
 
-}
-
-
-    // Guardar JSON en archivo
+    // GUARDAR JSON EN EL ARCHIVO
     private static void saveRates(Context context, JSONObject rates) {
         try {
             FileOutputStream fos = context.openFileOutput(FILE_NAME, Context.MODE_PRIVATE); // crea el archivo o lo sobrescribe si ya existe
@@ -47,7 +46,7 @@ public class Convert {
 
     }
 
-    // Guardar
+    // GUARDAR O ACTUALIZAR
     public static void setRate(Context context, String currency, double rate) {
         try {
             JSONObject rates = loadRates(context); // carga las tasas existentes
@@ -60,7 +59,7 @@ public class Convert {
         }
     }
 
-    // Leer
+    // LEER UNA TASA
     public static double getRate(Context context, String currency) {
         try {
             JSONObject rates = loadRates(context); // carga las tasas existentes
@@ -75,7 +74,7 @@ public class Convert {
         }
     }
 
-    // Borrar todas las tasas
+    // BORRAR TODAS LAS TASAS
     public static void clearRates(Context context) {
         try {
             context.deleteFile(FILE_NAME);
@@ -84,13 +83,13 @@ public class Convert {
         }
     }
 
-    // Convertir entre monedas
+    // CONVERTIR DINERO
     public static MoneyConversion convertMoney(Context context, MoneyConversion moneyConversion) {
         try {
             double euros = Double.parseDouble(moneyConversion.getAmount()); // tasa de la moneda EURO
             double toRate = getRate(context, moneyConversion.getToCurrency()); // tasa de la moneda que sea
 
-            if (euros == -1 || toRate == -1) {
+            if (euros == -1 || toRate == -1) { // si no existe la tasa
                 throw new convertException("Tasa no disponible");
             }
 

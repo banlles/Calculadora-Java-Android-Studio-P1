@@ -108,25 +108,28 @@ public class MainActivity extends AppCompatActivity {
 
 
         //BOTONES DE LAS MONEDAS
-        Button[] currencyButtons = { buttonLliures, buttonDollar, buttonYen, buttonYuan };
+        Button[] currencyButtons = {buttonLliures, buttonDollar, buttonYen, buttonYuan};
 
 
         buttonLliures.setOnClickListener(v -> {
-            Utilities.updateSelectedButton(currencyButtons, buttonLliures);
-            askUserForToCurrency("LLIURES");});
+            Utilities.updateSelectedButton(currencyButtons, buttonLliures); // actualiza el estado de los botones
+            askUserForToCurrency("LLIURES"); // comprueba y setea la moneda
+        });
 
         buttonDollar.setOnClickListener(v -> {
             Utilities.updateSelectedButton(currencyButtons, buttonDollar);
-            askUserForToCurrency("DOLLAR");});
+            askUserForToCurrency("DOLLAR");
+        });
 
         buttonYen.setOnClickListener(v -> {
             Utilities.updateSelectedButton(currencyButtons, buttonYen);
-            askUserForToCurrency("YEN");});
+            askUserForToCurrency("YEN");
+        });
 
         buttonYuan.setOnClickListener(v -> {
             Utilities.updateSelectedButton(currencyButtons, buttonYuan);
-            askUserForToCurrency("YUAN");});
-
+            askUserForToCurrency("YUAN");
+        });
 
 
         //BOTON DE BORRAR
@@ -243,11 +246,10 @@ public class MainActivity extends AppCompatActivity {
             try {
                 Utilities.showInputDialog(MainActivity.this, "Nuevo factor de conversión", "Introduce el valor en euros de 1 " + currency, inputText -> {
                             try {
-                                double newRate = Double.parseDouble(inputText);
-                                Convert.setRate(MainActivity.this, currency, newRate);
-                                moneyConversion2.setToCurrency(currency);
-                                Utilities.toastText(MainActivity.this,
-                                        "Guardado: 1 " + currency + " = " + newRate + " €", "s");
+                                double newRate = Double.parseDouble(inputText); // intentamos parsear el valor introducido
+                                Convert.setRate(MainActivity.this, currency, newRate); // lo guardamos en el JSON
+                                moneyConversion2.setToCurrency(currency); // la añadimos al objeto moneyConversion
+                                Utilities.toastText(MainActivity.this, "Guardado: 1 " + currency + " = " + newRate + " €", "s");
                             } catch (NumberFormatException e) {
                                 Utilities.toastText(MainActivity.this, "Número inválido", "s");
                             } catch (convertException e) {

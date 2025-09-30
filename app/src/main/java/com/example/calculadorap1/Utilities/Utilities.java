@@ -15,9 +15,10 @@ import java.util.function.Consumer;
 
 public class Utilities {
 
+    //TOAST TEXT
     public static void toastText(Context context, String text, String typeToast) {
         try {
-            switch (typeToast) {
+            switch (typeToast) { // switch para elegir el tipo de toast
                 case "s":
                     Toast.makeText(context, text, Toast.LENGTH_SHORT).show();
                     break;
@@ -38,18 +39,19 @@ public class Utilities {
     }
 
 
+    // INPUT DIALOG
     public static void showInputDialog(Context context, String title, String message, Consumer<String> onResult) {
         try {
             EditText input = new EditText(context);
 
-            new AlertDialog.Builder(context)
+            new AlertDialog.Builder(context) //
                     .setTitle(title)
                     .setMessage(message)
                     .setView(input)
                     .setPositiveButton("Guardar", (dialog, which) -> {
-                        String text = input.getText().toString();
-                        if (onResult != null) {
-                            onResult.accept(text);
+                        String text = input.getText().toString(); // Obtener el texto introducido
+                        if (onResult != null) {  // Verificar que onResult no es null
+                            onResult.accept(text); // Llamar al consumidor con el texto
                         }
                     })
                     .setNegativeButton("Cancelar", (dialog, which) -> dialog.dismiss())
@@ -66,6 +68,7 @@ public class Utilities {
         }
     }
 
+    // UPDATE TEXTVIEWS
     private static TextView tvConversion;
     private static TextView tvEuro;
 
@@ -78,9 +81,10 @@ public class Utilities {
         }
     }
 
+    // PONER TEXTO EN TEXTVIEW
     public static void updateResult(String result, int TextView) {
         try {
-            switch (TextView) {
+            switch (TextView) { // switch para elegir el TextView
                 case 1:
                     tvConversion.setText(result);
                     break;
@@ -97,25 +101,27 @@ public class Utilities {
         }
     }
 
+    // COMPROBAR DECIMALES
     public static boolean checkDecimals(String number) {
         try {
             int decimales = 2;
 
-            if (number == null || number.isEmpty()) {
+            if (number == null || number.isEmpty()) { // comprueba si el número es nulo o vacío
                 return false;
             }
 
-            if (number.contains(".")) {
-                String decimals = number.substring(number.indexOf(".") + 1);
-                return decimals.length() >= decimales;
+            if (number.contains(".")) { // comprueba si el número tiene decimales
+                String decimals = number.substring(number.indexOf(".") + 1); // obtiene la parte decimal del número
+                return decimals.length() >= decimales; // comprueba si tiene al menos 2 decimales
             }
 
-            return false;
+            return false; // si no tiene decimales, devuelve false
         } catch (Exception e) {
             throw new utilitiesException("No se pudo comprobar los decimales");
         }
     }
 
+    // ACTUALIZAR BOTONES SELECCIONADOS
     public static void updateSelectedButton(Button[] buttons, Button selected) {
         try {
             for (Button b : buttons) {
@@ -130,7 +136,6 @@ public class Utilities {
             }
         }
     }
-
 
 
 }

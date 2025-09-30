@@ -4,7 +4,7 @@ public class MoneyConversion {
     private String amount = "";
     private String fromCurrency = "EUR"; // valor por defecto
     private String toCurrency =  "";
-    private String result; // puede ser null
+    private String result;
 
 
     public MoneyConversion() {
@@ -17,7 +17,7 @@ public class MoneyConversion {
         setResult(null);
     }
 
-    // Getters y setter
+    // GETTERS Y SETTERS
 
     public String getAmount() {
         return String.valueOf(amount);
