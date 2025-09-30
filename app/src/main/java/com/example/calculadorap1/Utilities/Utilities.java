@@ -46,7 +46,7 @@ public class Utilities {
         try {
             EditText input = new EditText(context);
 
-            new AlertDialog.Builder(context) //
+            new AlertDialog.Builder(context)
                     .setTitle(title)
                     .setMessage(message)
                     .setView(input)
