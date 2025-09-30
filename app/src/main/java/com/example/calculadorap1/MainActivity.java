@@ -68,17 +68,27 @@ public class MainActivity extends AppCompatActivity {
 
 
         //BOTONES DE LOS NUMEROS
+        Button[] numberButtons = {
+                buttonNumber0, buttonNumber1, buttonNumber2,
+                buttonNumber3, buttonNumber4, buttonNumber5,
+                buttonNumber6, buttonNumber7, buttonNumber8, buttonNumber9
+        };
 
-        buttonNumber0.setOnClickListener(v -> appendAmount("0"));
-        buttonNumber1.setOnClickListener(v -> appendAmount("1"));
-        buttonNumber2.setOnClickListener(v -> appendAmount("2"));
-        buttonNumber3.setOnClickListener(v -> appendAmount("3"));
-        buttonNumber4.setOnClickListener(v -> appendAmount("4"));
-        buttonNumber5.setOnClickListener(v -> appendAmount("5"));
-        buttonNumber6.setOnClickListener(v -> appendAmount("6"));
-        buttonNumber7.setOnClickListener(v -> appendAmount("7"));
-        buttonNumber8.setOnClickListener(v -> appendAmount("8"));
-        buttonNumber9.setOnClickListener(v -> appendAmount("9"));
+        for (int i = 0; i < numberButtons.length; i++) {
+            final String digit = String.valueOf(i);
+            numberButtons[i].setOnClickListener(v -> {
+                try {
+                    appendAmount(digit); // función para añadir el número al amount
+                } catch (utilitiesException e) {
+                    Utilities.toastText(MainActivity.this, e.getMessage(), "s");
+                } catch (IllegalArgumentException e) {
+                    Utilities.toastText(MainActivity.this, e.getMessage(), "s");
+                } catch (Exception e) {
+                    Utilities.toastText(MainActivity.this, "Ha ocurrido un problema", "s");
+                }
+            });
+        }
+
 
 
         // BOTON DEL PUNTO DECIMAL
@@ -109,27 +119,25 @@ public class MainActivity extends AppCompatActivity {
 
         //BOTONES DE LAS MONEDAS
         Button[] currencyButtons = {buttonLliures, buttonDollar, buttonYen, buttonYuan};
+        String[] currencies = {"LLIURES", "DOLLAR", "YEN", "YUAN"};
 
-
-        buttonLliures.setOnClickListener(v -> {
-            Utilities.updateSelectedButton(currencyButtons, buttonLliures); // actualiza el estado de los botones
-            askUserForToCurrency("LLIURES"); // comprueba y setea la moneda
-        });
-
-        buttonDollar.setOnClickListener(v -> {
-            Utilities.updateSelectedButton(currencyButtons, buttonDollar);
-            askUserForToCurrency("DOLLAR");
-        });
-
-        buttonYen.setOnClickListener(v -> {
-            Utilities.updateSelectedButton(currencyButtons, buttonYen);
-            askUserForToCurrency("YEN");
-        });
-
-        buttonYuan.setOnClickListener(v -> {
-            Utilities.updateSelectedButton(currencyButtons, buttonYuan);
-            askUserForToCurrency("YUAN");
-        });
+        for (int i = 0; i < currencyButtons.length; i++) {
+            final int index = i;
+            currencyButtons[i].setOnClickListener(v -> {
+                try {
+                    Utilities.updateSelectedButton(currencyButtons, currencyButtons[index]); // actualiza el botón seleccionado
+                    askUserForToCurrency(currencies[index]); // pide y setea la moneda
+                } catch (utilitiesException e) {
+                    Utilities.toastText(MainActivity.this, e.getMessage(), "s");
+                } catch (convertException e) {
+                    Utilities.toastText(MainActivity.this, e.getMessage(), "s");
+                } catch (IllegalArgumentException e) {
+                    Utilities.toastText(MainActivity.this, e.getMessage(), "s");
+                } catch (Exception e) {
+                    Utilities.toastText(MainActivity.this, "Ha ocurrido un problema", "s");
+                }
+            });
+        }
 
 
         //BOTON DE BORRAR

@@ -1,6 +1,7 @@
 package com.example.calculadorap1.Utilities;
 
 import android.content.Context;
+import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
@@ -9,6 +10,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 
+import com.example.calculadorap1.exceptions.convertException;
 import com.example.calculadorap1.exceptions.utilitiesException;
 
 import java.util.function.Consumer;
@@ -136,6 +138,23 @@ public class Utilities {
             }
         }
     }
+
+    // EJECUTAR ONCLICK BUTTON DE FORMA SEGURA
+    public static void safeClickButton(Runnable action, Context context) {
+        try {
+            action.run();
+        } catch (utilitiesException e) {
+            toastText(context, e.getMessage(), "s");
+        } catch (convertException e) {
+            toastText(context, e.getMessage(), "s");
+        } catch (IllegalArgumentException e) {
+            toastText(context, e.getMessage(), "s");
+        } catch (Exception e) {
+            toastText(context, "Ha ocurrido un problema", "s");
+        }
+    }
+
+
 
 
 }
