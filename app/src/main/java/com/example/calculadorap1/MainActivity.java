@@ -146,8 +146,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) { //seteamos todo en 0 o nada
                 try {
-                    moneyConversion2.setAmount(" ", false);
-                    moneyConversion2.setAmount(" ", false);
+                    moneyConversion2.setAmount("", false);
+                    moneyConversion2.setResult("");
                     Utilities.updateResult("0", 1);
                     Utilities.updateResult("0", 2);
                     Utilities.updateSelectedButton(currencyButtons, null);
